@@ -1,13 +1,12 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Pay It Forward Map</title>
+    <title>Pay It Forward Globe</title>
     <script src="https://unpkg.com/three@0.148.0/build/three.min.js"></script>
     <script src="https://unpkg.com/globe.gl"></script>
     <style>
-      body { margin: 0; overflow: hidden; }
+      body { margin: 0; overflow: hidden; background: #000; }
       #globeViz { width: 100vw; height: 100vh; }
     </style>
   </head>
@@ -15,26 +14,34 @@
     <div id="globeViz"></div>
 
     <script>
-      const myData = [
-        { lat: 37.5665, lng: 126.9780, name: "Seoul", story: "A가 B에게 커피를 전했어요" },
-        { lat: 35.1796, lng: 129.0756, name: "Busan", story: "B가 C를 격려했어요" },
-        { lat: 40.7128, lng: -74.0060, name: "New York", story: "C가 D에게 편지를 보냈어요" }
+      const points = [
+        { lat: 37.5665, lng: 126.9780, name: "Seoul", story: "A → B" },
+        { lat: 35.6895, lng: 139.6917, name: "Tokyo", story: "B → C" }
       ];
 
       const links = [
-        { startLat: 37.5665, startLng: 126.9780, endLat: 35.1796, endLng: 129.0756 },
-        { startLat: 35.1796, startLng: 129.0756, endLat: 40.7128, endLng: -74.0060 }
+        { startLat: 37.5665, startLng: 126.9780, endLat: 35.6895, endLng: 139.6917 }
       ];
 
-      Globe()(document.getElementById('globeViz'))
-        .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
-        .pointsData(myData)
+      const globe = Globe()
+        (document.getElementById('globeViz'))
+        .globeImageUrl('https://raw.githubusercontent.com/huww98/planet-textures/main/4k_earth_daymap.jpg')
+        .backgroundImageUrl(null)
+        .bumpImageUrl(null)
+        .showAtmosphere(false)
+        .pointsData(points)
         .pointLabel(d => `${d.name}: ${d.story}`)
-        .pointAltitude(0.02)
-        .pointColor(() => '#ffcc00')
+        .pointColor(() => '#ffaa00')
+        .pointAltitude(0.015)
         .linksData(links)
-        .linkColor(() => 'orange')
-        .linkAltitude(0.1);
+        .linkColor(() => '#999')
+        .linkWidth(() => 0.4)
+        .linkAltitude(0.07);
+
+      globe.controls().autoRotate = true;
+      globe.controls().autoRotateSpeed = 0.4;
+      globe.controls().minDistance = 180;
+      globe.controls().maxDistance = 400;
     </script>
   </body>
 </html>
